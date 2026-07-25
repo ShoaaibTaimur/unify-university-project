@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  oracle:
+    image: gvenzl/oracle-free:latest
+    container_name: unify-oracle
+    ports:
+      - "1521:1521"
+    environment:
+      - ORACLE_PASSWORD=oracle
+      - APP_USER=unify
+      - APP_USER_PASSWORD=unify
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+      - ./db.sql:/container-entrypoint-initdb.d/init.sql
+    restart: always
+
+volumes:
+  oracle_data:

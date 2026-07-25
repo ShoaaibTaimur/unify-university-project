@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="unify-jsp-app" default="war" basedir=".">
+
+    <property name="src.dir" value="src/main/java"/>
+    <property name="web.dir" value="src/main/webapp"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${web.dir}/WEB-INF/classes"/>
+    <property name="lib.dir" value="${web.dir}/WEB-INF/lib"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="war.file" value="${dist.dir}/unify-jsp-app.war"/>
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" erroronmissingdir="false">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean" description="Clean build directories">
+        <delete dir="${build.dir}"/>
+        <delete dir="${classes.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <target name="init" depends="clean">
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile" depends="init" description="Compile Java sources">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" debug="true" source="1.8" target="1.8">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>
+
+    <target name="war" depends="compile" description="Create WAR package">
+        <war destfile="${war.file}" webxml="${web.dir}/WEB-INF/web.xml">
+            <fileset dir="${web.dir}"/>
+        </war>
+        <echo message="WAR package generated successfully at ${war.file}"/>
+    </target>
+
+</project>

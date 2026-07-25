@@ -1,0 +1,69 @@
+# Build artifacts & compiled outputs
+dist/
+build/
+bin/
+target/
+*.war
+*.ear
+*.zip
+*.tar.gz
+
+# Java compiled classes
+*.class
+src/main/webapp/WEB-INF/classes/
+WEB-INF/classes/
+
+# Downloaded JAR dependencies (fetched automatically via setup.sh)
+src/main/webapp/WEB-INF/lib/*.jar
+!src/main/webapp/WEB-INF/lib/.gitkeep
+
+# Node & Frontend dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.package-lock.json
+
+# Generated CSS (built via npm run build:css / setup.sh)
+src/main/webapp/css/style.css
+
+# Environment & Sensitive / Secret Files
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.crt
+*.keystore
+*.jks
+secrets/
+config/local.json
+
+# Log files & Database dumps
+*.log
+logs/
+*.sqlite
+*.db
+oracle-data/
+
+# Editor & IDE metadata
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+*.suo
+*.user
+
+# Operating System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
