@@ -25,7 +25,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--fg); min-height: 100vh; display: flex; }
 
-        /* Sidebar */
         .sidebar { width: 15rem; background: white; border-right: 1.5px solid var(--border); padding: 1.5rem 0; display: flex; flex-direction: column; min-height: 100vh; position: fixed; top: 0; left: 0; z-index: 20; }
         .sidebar-logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); letter-spacing: -0.02em; padding: 0 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
         .sidebar-user { padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.2rem; border-bottom: 1px solid var(--border); }
@@ -38,10 +37,8 @@
         .sidebar-logout { margin: 1rem 1.25rem 0; padding: 0.5rem 1rem; border: 1.5px solid var(--border); border-radius: 0.75rem; font-size: 0.8rem; font-weight: 500; color: var(--muted-fg); text-align: center; text-decoration: none; transition: all 0.15s; }
         .sidebar-logout:hover { border-color: var(--primary); color: var(--primary); }
 
-        /* Main content */
         .main { margin-left: 15rem; flex: 1; padding: 2.5rem 2rem; }
 
-        /* Hero */
         .hero-band { background: linear-gradient(90deg, #fff0f0 0%, #F8F8F8 100%); border-bottom: 1px solid var(--border); padding: 2.5rem 2rem; margin: -2.5rem -2rem 2.5rem; }
         .hero-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem; }
         .hero-title { font-size: 2.25rem; font-weight: 600; letter-spacing: -0.02em; }
@@ -49,7 +46,6 @@
         .hero-sub { font-size: 0.9rem; color: var(--muted-fg); margin-top: 0.4rem; }
         .hero-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap; }
 
-        /* Filter */
         .filter-bar { background: white; border: 1.5px solid var(--border); border-radius: 1rem; padding: 1.25rem; margin-bottom: 1.75rem; display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 0.75rem; align-items: end; }
         @media(max-width:768px){ .filter-bar { grid-template-columns: 1fr 1fr; } }
         .filter-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted-fg); margin-bottom: 0.35rem; }
@@ -60,11 +56,10 @@
         .btn-primary { height: 2.25rem; background: var(--primary); color: white; border: none; border-radius: 0.625rem; padding: 0 1.25rem; font-size: 0.875rem; font-weight: 600; font-family: inherit; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
         .btn-primary:hover { background: var(--primary-deep); }
 
-        /* Activity grid */
         .section-title { font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 0.875rem; }
         .activity-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
-        .activity-card { background: white; border: 1.5px solid var(--border); border-radius: 1rem; padding: 1.25rem; box-shadow: 0 1px 2px rgba(128,0,0,0.04), 0 8px 24px -12px rgba(128,0,0,0.12); display: flex; flex-direction: column; }
-        .activity-card:hover { border-color: var(--accent); }
+        .activity-card { background: white; border: 1.5px solid var(--border); border-radius: 1rem; padding: 1.25rem; box-shadow: 0 1px 2px rgba(128,0,0,0.04), 0 8px 24px -12px rgba(128,0,0,0.12); display: flex; flex-direction: column; cursor: pointer; transition: all 0.15s; }
+        .activity-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px -8px rgba(128,0,0,0.15); }
         .activity-badge { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; background: #fff0f0; color: var(--primary); border: 1px solid #fcc; border-radius: 999px; padding: 0.2rem 0.625rem; display: inline-block; }
         .activity-date { font-size: 0.75rem; color: var(--muted-fg); }
         .activity-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
@@ -76,10 +71,25 @@
         .btn-delete:hover { color: var(--primary-deep); text-decoration: underline; }
         .empty-state { background: white; border: 1.5px dashed var(--border); border-radius: 1.25rem; padding: 4rem 2rem; text-align: center; color: var(--muted-fg); font-size: 0.9rem; }
         .empty-icon { font-size: 2rem; margin-bottom: 1rem; opacity: 0.4; }
+
+        /* Modal Overlay & Card */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; padding: 1rem; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-card { background: white; border-radius: 1.5rem; border: 1.5px solid var(--border); width: 100%; max-width: 32rem; padding: 1.75rem; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.25); transform: translateY(12px); transition: transform 0.2s ease; position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal-overlay.active .modal-card { transform: translateY(0); }
+        .modal-close { position: absolute; top: 1.25rem; right: 1.25rem; width: 2rem; height: 2rem; border-radius: 999px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); font-size: 1rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; }
+        .modal-close:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .modal-badge { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; background: #fff0f0; color: var(--primary); border: 1px solid #fcc; border-radius: 999px; padding: 0.2rem 0.625rem; display: inline-block; margin-bottom: 0.75rem; }
+        .modal-title { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.35rem; color: var(--fg); }
+        .modal-subject { font-size: 0.9rem; font-weight: 600; color: var(--primary); margin-bottom: 1rem; }
+        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 1rem; padding: 1rem; margin-bottom: 1.25rem; }
+        .modal-item-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted-fg); }
+        .modal-item-val { font-size: 0.875rem; font-weight: 600; color: var(--fg); margin-top: 0.2rem; }
+        .modal-desc-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted-fg); margin-bottom: 0.35rem; }
+        .modal-desc-text { font-size: 0.875rem; line-height: 1.5; color: var(--fg); white-space: pre-wrap; background: white; border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.875rem; }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-logo">UNIFY</div>
         <div class="sidebar-user">
@@ -99,9 +109,7 @@
         <a href="${pageContext.request.contextPath}/logout" class="sidebar-logout">Sign out</a>
     </aside>
 
-    <!-- Main -->
     <main class="main">
-        <!-- Hero band -->
         <div class="hero-band">
             <p class="hero-label">Your class</p>
             <h1 class="hero-title">Academic <span class="primary">Activities</span></h1>
@@ -113,7 +121,6 @@
             </div>
         </div>
 
-        <!-- Filter -->
         <form method="GET" action="dashboard.jsp" class="filter-bar">
             <div>
                 <div class="filter-label">Department</div>
@@ -148,7 +155,6 @@
             </div>
         </form>
 
-        <!-- Activity cards -->
         <div class="section-title">All Activities (<%= activities.size() %>)</div>
 
         <% if (activities.isEmpty()) { %>
@@ -159,7 +165,7 @@
         <% } else { %>
             <div class="activity-grid">
                 <% for (Activity act : activities) { %>
-                    <div class="activity-card">
+                    <div class="activity-card" onclick="openActivityModal('<%= act.activityType.replace("-", " ") %>', '<%= act.title.replace("'","\\'") %>', '<%= act.subject.replace("'","\\'") %>', '<%= act.eventDate != null ? act.eventDate : "TBD" %>', '<%= act.room != null ? act.room.replace("'","\\'") : "N/A" %>', '<%= act.description != null ? act.description.replace("'","\\'").replace("\n","\\n") : "No description provided." %>')">
                         <div class="activity-meta">
                             <span class="activity-badge"><%= act.activityType.replace("-", " ") %></span>
                             <% if (act.eventDate != null && !act.eventDate.isEmpty()) { %>
@@ -172,7 +178,7 @@
                             <div class="activity-desc"><%= act.description %></div>
                         <% } %>
                         <% if ("admin".equalsIgnoreCase(currentUser.role) || currentUser.id.equals(act.createdBy)) { %>
-                            <div class="activity-actions">
+                            <div class="activity-actions" onclick="event.stopPropagation()">
                                 <form action="${pageContext.request.contextPath}/activity" method="POST">
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="id" value="<%= act.id %>">
@@ -185,5 +191,47 @@
             </div>
         <% } %>
     </main>
+
+    <!-- Detail Popup Modal -->
+    <div id="activityModal" class="modal-overlay" onclick="if(event.target===this)closeActivityModal()">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeActivityModal()">✕</button>
+            <span id="mType" class="modal-badge">Class Test</span>
+            <div id="mTitle" class="modal-title">Activity Details</div>
+            <div id="mSubject" class="modal-subject">Subject</div>
+
+            <div class="modal-grid">
+                <div>
+                    <div class="modal-item-label">📅 Date</div>
+                    <div id="mDate" class="modal-item-val">Date</div>
+                </div>
+                <div>
+                    <div class="modal-item-label">📍 Room / Venue</div>
+                    <div id="mRoom" class="modal-item-val">Room</div>
+                </div>
+            </div>
+
+            <div class="modal-desc-label">Syllabus & Details</div>
+            <div id="mDesc" class="modal-desc-text">Description</div>
+        </div>
+    </div>
+
+    <script>
+        function openActivityModal(type, title, subject, date, room, desc) {
+            document.getElementById('mType').innerText = type.toUpperCase();
+            document.getElementById('mTitle').innerText = title;
+            document.getElementById('mSubject').innerText = subject;
+            document.getElementById('mDate').innerText = date || 'Date TBD';
+            document.getElementById('mRoom').innerText = room || 'N/A';
+            document.getElementById('mDesc').innerText = desc || 'No detailed syllabus or description provided.';
+            document.getElementById('activityModal').classList.add('active');
+        }
+        function closeActivityModal() {
+            document.getElementById('activityModal').classList.remove('active');
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeActivityModal();
+        });
+    </script>
 </body>
 </html>
