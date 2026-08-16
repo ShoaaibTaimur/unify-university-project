@@ -34,12 +34,16 @@ echo "[2/5] Waiting 15s for Oracle DB initialization..."
 sleep 15
 
 echo "[3/5] Executing db.sql schema & seed script in Oracle DB..."
+sudo docker exec -i unify-oracle sqlplus system/oracle@FREEPDB1 << 'EOF' 2>/dev/null || true
+ALTER SESSION SET CONTAINER = FREEPDB1;
+CREATE USER unify IDENTIFIED BY unify;
+GRANT CONNECT, RESOURCE, DBA TO unify;
+ALTER USER unify QUOTA UNLIMITED ON USERS;
+EOF
 sudo docker exec -i unify-oracle sqlplus unify/unify@FREEPDB1 < db.sql || true
 
 echo "[4/5] Building Tailwind CSS..."
-if [ ! -d "node_modules" ]; then
-    npm install
-fi
+npm install
 npm run build:css
 
 echo "[5/5] Downloading JAR dependencies & compiling via Apache Ant..."

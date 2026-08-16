@@ -4,9 +4,9 @@
   "description": "Unify Academic Activity Portal - Java JSP Stack",
   "main": "index.js",
   "scripts": {
-    "build:css": "tailwindcss -i ./src/main/webapp/css/input.css -o ./src/main/webapp/css/style.css --minify"
+    "build:css": "npx tailwindcss -i ./src/main/webapp/css/input.css -o ./src/main/webapp/css/style.css --minify"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.17"
   }
 }
