@@ -66,12 +66,12 @@
             <span class="sidebar-user-role"><%= currentUser.role %></span>
         </div>
         <nav>
-            <a href="index.jsp" class="nav-link">🌐 Public Home</a>
-            <a href="dashboard.jsp" class="nav-link">🏠 Dashboard</a>
-            <a href="users.jsp" class="nav-link active">👥 Manage Users</a>
-            <a href="hierarchy.jsp" class="nav-link">🏛️ Organization</a>
-            <a href="activity.jsp" class="nav-link">➕ Add Activity</a>
-            <a href="password.jsp" class="nav-link">🔐 Change Password</a>
+            <a href="index.jsp" class="nav-link">Public Home</a>
+            <a href="dashboard.jsp" class="nav-link">Dashboard</a>
+            <a href="users.jsp" class="nav-link active">Manage Users</a>
+            <a href="hierarchy.jsp" class="nav-link">Organization</a>
+            <a href="activity.jsp" class="nav-link">Add Activity</a>
+            <a href="password.jsp" class="nav-link">Change Password</a>
         </nav>
         <a href="${pageContext.request.contextPath}/logout" class="sidebar-logout">Sign out</a>
     </aside>

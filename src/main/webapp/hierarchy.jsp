@@ -79,12 +79,12 @@
             <span class="sidebar-user-role"><%= currentUser.role %></span>
         </div>
         <nav>
-            <a href="index.jsp" class="nav-link">🌐 Public Home</a>
-            <a href="dashboard.jsp" class="nav-link">🏠 Dashboard</a>
-            <a href="users.jsp" class="nav-link">👥 Manage Users</a>
-            <a href="hierarchy.jsp" class="nav-link active">🏛️ Organization</a>
-            <a href="activity.jsp" class="nav-link">➕ Add Activity</a>
-            <a href="password.jsp" class="nav-link">🔐 Change Password</a>
+            <a href="index.jsp" class="nav-link">Public Home</a>
+            <a href="dashboard.jsp" class="nav-link">Dashboard</a>
+            <a href="users.jsp" class="nav-link">Manage Users</a>
+            <a href="hierarchy.jsp" class="nav-link active">Organization</a>
+            <a href="activity.jsp" class="nav-link">Add Activity</a>
+            <a href="password.jsp" class="nav-link">Change Password</a>
         </nav>
         <a href="${pageContext.request.contextPath}/logout" class="sidebar-logout">Sign out</a>
     </aside>
@@ -100,7 +100,6 @@
                 <input type="hidden" name="type" value="department">
                 <input type="hidden" name="action" value="create">
                 <div class="form-card-header">
-                    <div class="form-card-icon">🏢</div>
                     <div class="form-card-title">Add Department</div>
                 </div>
                 <div class="form-group">
@@ -115,7 +114,6 @@
                 <input type="hidden" name="type" value="batch">
                 <input type="hidden" name="action" value="create">
                 <div class="form-card-header">
-                    <div class="form-card-icon">📚</div>
                     <div class="form-card-title">Add Batch</div>
                 </div>
                 <div class="form-group">
@@ -139,7 +137,6 @@
                 <%-- Step 1: filter batches by dept via GET --%>
                 <form action="hierarchy.jsp" method="GET" style="margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)">
                     <div class="form-card-header">
-                        <div class="form-card-icon">🎓</div>
                         <div class="form-card-title">Add Section</div>
                     </div>
                     <div class="form-group">
@@ -191,7 +188,6 @@
                 <div class="dept-card">
                     <div class="dept-header">
                         <div class="dept-name-wrap">
-                            <div class="dept-icon">🏢</div>
                             <div>
                                 <div class="dept-name"><%= d.name %></div>
                                 <div class="dept-count">
@@ -204,7 +200,7 @@
                             <input type="hidden" name="type" value="department">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="<%= d.id %>">
-                            <button type="submit" class="btn-delete-sm">🗑 Delete</button>
+                            <button type="submit" class="btn-delete-sm">Delete</button>
                         </form>
                     </div>
 
@@ -214,7 +210,6 @@
                             <div class="batch-card">
                                 <div class="batch-header">
                                     <div style="display:flex;align-items:center;gap:0.5rem">
-                                        <span style="color:var(--primary);font-size:0.875rem">📚</span>
                                         <span class="batch-name"><%= b.name %></span>
                                         <span style="font-size:0.7rem;color:var(--muted-fg)">
                                             (<% int sc = 0; for (Section s : sections) { if (s.batchId.equals(b.id)) sc++; } %><%= sc %> sections)
@@ -224,14 +219,13 @@
                                         <input type="hidden" name="type" value="batch">
                                         <input type="hidden" name="action" value="delete">
                                         <input type="hidden" name="id" value="<%= b.id %>">
-                                        <button type="submit" class="btn-delete-sm">🗑</button>
+                                        <button type="submit" class="btn-delete-sm">Delete</button>
                                     </form>
                                 </div>
                                 <div class="sections-wrap">
                                     <% boolean hasSec = false; %>
                                     <% for (Section s : sections) { if (!s.batchId.equals(b.id)) continue; hasSec = true; %>
                                         <div class="section-pill">
-                                            <span>🎓</span>
                                             <%= s.name %>
                                             <form action="${pageContext.request.contextPath}/hierarchy" method="POST" style="display:inline">
                                                 <input type="hidden" name="type" value="section">

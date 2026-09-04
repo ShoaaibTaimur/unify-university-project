@@ -1,34 +1,89 @@
-# Build artifacts & compiled outputs
+# ==========================================
+# macOS System Files (Apple Silicon / Intel)
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+Icon?
+Network Trash Folder
+Temporary Items
+
+# ==========================================
+# Linux & Windows System Files
+# ==========================================
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# ==========================================
+# Temporary, Scratch & Local Runtime Files
+# ==========================================
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+cookies.txt
+*cookies*.txt
+scratch/
+
+# ==========================================
+# Logs & Process Dumps
+# ==========================================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ==========================================
+# Node / Frontend Artifacts
+# ==========================================
+node_modules/
+.npm/
+.package-lock.json
+
+# Generated CSS (built via Tailwind)
+src/main/webapp/css/style.css
+
+# ==========================================
+# Java / Build Artifacts & Compiled Classes
+# ==========================================
 dist/
 build/
 bin/
 target/
+out/
+*.class
+src/main/webapp/WEB-INF/classes/
+WEB-INF/classes/
 *.war
 *.ear
 *.zip
 *.tar.gz
 
-# Java compiled classes
-*.class
-src/main/webapp/WEB-INF/classes/
-WEB-INF/classes/
-
-# Downloaded JAR dependencies (fetched automatically via setup.sh)
+# Downloaded JAR dependencies (managed by setup scripts)
 src/main/webapp/WEB-INF/lib/*.jar
 !src/main/webapp/WEB-INF/lib/.gitkeep
 
-# Node & Frontend dependencies
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-.package-lock.json
+# ==========================================
+# Databases & Local Volume Mounts
+# ==========================================
+*.db
+*.sqlite
+*.sqlite3
+oracle-data/
 
-# Generated CSS (built via npm run build:css / setup.sh)
-src/main/webapp/css/style.css
-
-# Environment & Sensitive / Secret Files
+# ==========================================
+# Secrets, Keys & Environment Variables
+# ==========================================
 .env
 .env.local
 .env.*.local
@@ -40,16 +95,14 @@ src/main/webapp/css/style.css
 secrets/
 config/local.json
 
-# Log files & Database dumps
-*.log
-logs/
-*.sqlite
-*.db
-oracle-data/
-
-# Editor & IDE metadata
+# ==========================================
+# IDEs & Editor Metadata
+# ==========================================
 .idea/
 .vscode/
+.trae/
+.agents/
+.gemini/
 *.iml
 *.ipr
 *.iws
@@ -58,12 +111,5 @@ oracle-data/
 .settings/
 *.suo
 *.user
-
-# Operating System files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+*.userosscache
+*.sln.docstates

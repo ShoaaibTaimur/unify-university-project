@@ -97,14 +97,14 @@
             <span class="sidebar-user-role"><%= currentUser.role %></span>
         </div>
         <nav>
-            <a href="index.jsp" class="nav-link">🌐 Public Home</a>
-            <a href="dashboard.jsp" class="nav-link active">🏠 Dashboard</a>
+            <a href="index.jsp" class="nav-link">Public Home</a>
+            <a href="dashboard.jsp" class="nav-link active">Dashboard</a>
             <% if ("admin".equalsIgnoreCase(currentUser.role)) { %>
-                <a href="users.jsp" class="nav-link">👥 Manage Users</a>
-                <a href="hierarchy.jsp" class="nav-link">🏛️ Organization</a>
+                <a href="users.jsp" class="nav-link">Manage Users</a>
+                <a href="hierarchy.jsp" class="nav-link">Organization</a>
             <% } %>
-            <a href="activity.jsp" class="nav-link">➕ Add Activity</a>
-            <a href="password.jsp" class="nav-link">🔐 Change Password</a>
+            <a href="activity.jsp" class="nav-link">Add Activity</a>
+            <a href="password.jsp" class="nav-link">Change Password</a>
         </nav>
         <a href="${pageContext.request.contextPath}/logout" class="sidebar-logout">Sign out</a>
     </aside>
@@ -159,7 +159,6 @@
 
         <% if (activities.isEmpty()) { %>
             <div class="empty-state">
-                <div class="empty-icon">🎉</div>
                 <div>No activities found matching criteria.</div>
             </div>
         <% } else { %>
@@ -180,7 +179,7 @@
                         <% if ("admin".equalsIgnoreCase(currentUser.role) || currentUser.id.equals(act.createdBy)) { %>
                             <div class="activity-actions" onclick="event.stopPropagation()">
                                 <form action="${pageContext.request.contextPath}/activity" method="POST">
-                                    <input type="hidden" name="action" value="delete">
+                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="id" value="<%= act.id %>">
                                     <button type="submit" class="btn-delete">Delete Activity</button>
                                 </form>
@@ -202,11 +201,11 @@
 
             <div class="modal-grid">
                 <div>
-                    <div class="modal-item-label">📅 Date</div>
+                    <div class="modal-item-label">Date</div>
                     <div id="mDate" class="modal-item-val">Date</div>
                 </div>
                 <div>
-                    <div class="modal-item-label">📍 Room / Venue</div>
+                    <div class="modal-item-label">Room / Venue</div>
                     <div id="mRoom" class="modal-item-val">Room</div>
                 </div>
             </div>

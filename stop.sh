@@ -8,9 +8,12 @@ echo "=========================================="
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-DOCKER_BIN="docker"
-if ! docker ps &>/dev/null; then
+if command -v docker &>/dev/null; then
+    DOCKER_BIN="docker"
+elif command -v sudo &>/dev/null && sudo docker ps &>/dev/null; then
     DOCKER_BIN="sudo docker"
+else
+    DOCKER_BIN="docker"
 fi
 
 # 1. Stop Tomcat container for Unify
@@ -23,7 +26,7 @@ else
     echo "unify-tomcat not running."
 fi
 
-# 2. Stop Oracle DB container for Unify (does not affect other containers)
+# 2. Stop Oracle DB container for Unify
 echo "[2/3] Stopping unify-oracle container..."
 if $DOCKER_BIN ps --format '{{.Names}}' | grep -q "^unify-oracle$"; then
     $DOCKER_BIN stop unify-oracle

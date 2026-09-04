@@ -89,14 +89,14 @@
             <span class="sidebar-user-role"><%= currentUser.role %></span>
         </div>
         <nav>
-            <a href="index.jsp" class="nav-link">🌐 Public Home</a>
-            <a href="dashboard.jsp" class="nav-link">🏠 Dashboard</a>
+            <a href="index.jsp" class="nav-link">Public Home</a>
+            <a href="dashboard.jsp" class="nav-link">Dashboard</a>
             <% if (isAdmin) { %>
-                <a href="users.jsp" class="nav-link">👥 Manage Users</a>
-                <a href="hierarchy.jsp" class="nav-link">🏛️ Organization</a>
+                <a href="users.jsp" class="nav-link">Manage Users</a>
+                <a href="hierarchy.jsp" class="nav-link">Organization</a>
             <% } %>
-            <a href="activity.jsp" class="nav-link active">➕ Add Activity</a>
-            <a href="password.jsp" class="nav-link">🔐 Change Password</a>
+            <a href="activity.jsp" class="nav-link active">Add Activity</a>
+            <a href="password.jsp" class="nav-link">Change Password</a>
         </nav>
         <a href="${pageContext.request.contextPath}/logout" class="sidebar-logout">Sign out</a>
     </aside>
@@ -106,11 +106,11 @@
             <h1>Create Academic Activity</h1>
             <p class="role-hint">
                 <% if (isCR) { %>
-                    🔒 Restricted to your assigned class section.
+                    Restricted to your assigned class section.
                 <% } else if (isTeacher) { %>
-                    🔒 Restricted to your assigned department.
+                    Restricted to your assigned department.
                 <% } else { %>
-                    🌐 System Admin — full university access.
+                    System Admin — full university access.
                 <% } %>
             </p>
 
