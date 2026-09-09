@@ -8,7 +8,6 @@ import unify.Models.*;
 
 public class AppDAO {
 
-    /* --- DEPARTMENTS --- */
     public static List<Department> getDepartments() {
         List<Department> list = new ArrayList<>();
         String sql = "SELECT * FROM DEPARTMENTS ORDER BY NAME";
@@ -48,7 +47,6 @@ public class AppDAO {
         }
     }
 
-    /* --- BATCHES --- */
     public static List<Batch> getBatches(String deptId) {
         List<Batch> list = new ArrayList<>();
         String sql = (deptId != null && !deptId.isEmpty()) 
@@ -95,7 +93,6 @@ public class AppDAO {
         }
     }
 
-    /* --- SECTIONS --- */
     public static List<Section> getSections(String batchId) {
         List<Section> list = new ArrayList<>();
         String sql = (batchId != null && !batchId.isEmpty())
@@ -142,7 +139,6 @@ public class AppDAO {
         }
     }
 
-    /* --- ACTIVITIES --- */
     public static List<Activity> getActivities(String deptId, String batchId, String secId) {
         List<Activity> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM ACTIVITIES WHERE 1=1");

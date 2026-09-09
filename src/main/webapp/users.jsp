@@ -81,7 +81,6 @@
         <p class="subtitle">Manage CRs, Teachers, and Admins across the university.</p>
 
         <div class="layout">
-            <!-- Create user form -->
             <div class="card">
                 <h3>Create New Account</h3>
                 <form action="${pageContext.request.contextPath}/users" method="POST">
@@ -137,7 +136,6 @@
                 </form>
             </div>
 
-            <!-- Users table -->
             <div class="card" style="padding: 0; overflow: hidden;">
                 <div style="padding: 1.5rem 1.5rem 0;">
                     <h3>All Accounts (<%= users.size() %>)</h3>

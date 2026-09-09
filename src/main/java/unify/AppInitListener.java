@@ -40,7 +40,6 @@ public class AppInitListener implements ServletContextListener {
                 return rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
-            // Table might not exist or error
         }
         return false;
     }
@@ -66,7 +65,6 @@ public class AppInitListener implements ServletContextListener {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.executeUpdate();
         } catch (SQLException e) {
-            // Ignore duplicate key exceptions (ORA-00001)
         }
     }
 }

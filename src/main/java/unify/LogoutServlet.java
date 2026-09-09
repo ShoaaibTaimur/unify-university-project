@@ -12,6 +12,12 @@ public class LogoutServlet extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
+
+        Cookie cookie = new Cookie("unify_user_id", "");
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        resp.addCookie(cookie);
+
         resp.sendRedirect(req.getContextPath() + "/login.jsp");
     }
 }

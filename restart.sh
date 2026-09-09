@@ -34,11 +34,9 @@ fi
 
 $DOCKER_BIN network create unify-net 2>/dev/null || true
 
-# 1. Build CSS
 echo "[1/4] Rebuilding Tailwind CSS & DaisyUI..."
 npm run build:css
 
-# 2. Compile Java sources and package WAR
 echo "[2/4] Compiling Java sources & packaging WAR..."
 if command -v ant &> /dev/null; then
     ant war
@@ -51,7 +49,6 @@ else
         /bin/bash -c "mkdir -p src/main/webapp/WEB-INF/classes dist && javac -cp 'src/main/webapp/WEB-INF/lib/*' -d src/main/webapp/WEB-INF/classes \$(find src/main/java -name '*.java') && jar -cvf dist/unify-jsp-app.war -C src/main/webapp ."
 fi
 
-# 3. Check / Start Oracle DB Container if stopped
 echo "[3/4] Checking Oracle DB Container..."
 if $DOCKER_BIN ps --format '{{.Names}}' | grep -q "^unify-oracle$"; then
     echo "Container unify-oracle is running."
@@ -75,7 +72,6 @@ else
         gvenzl/oracle-free:latest
 fi
 
-# Ensure Oracle is ready before starting Tomcat
 for i in {1..30}; do
     if echo "SELECT 'DB_READY_SIGNAL' FROM DUAL;" | $DOCKER_BIN exec -i unify-oracle sqlplus -s system/oracle@FREEPDB1 2>/dev/null | grep -q "DB_READY_SIGNAL"; then
         break
@@ -83,7 +79,6 @@ for i in {1..30}; do
     sleep 2
 done
 
-# 4. Restart Apache Tomcat Server Container
 echo "[4/4] Restarting Apache Tomcat with updated WAR..."
 $DOCKER_BIN stop unify-tomcat 2>/dev/null || true
 $DOCKER_BIN rm -f unify-tomcat 2>/dev/null || true

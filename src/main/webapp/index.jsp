@@ -1,26 +1,26 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="unify.Models.*, unify.AppDAO, java.util.List" %>
 <%
-    // Public student dashboard
+    User currentUser = (User) session.getAttribute("user");
     String deptId = request.getParameter("departmentId");
     String batchId = request.getParameter("batchId");
     String secId = request.getParameter("sectionId");
+    String applyFilter = request.getParameter("applyFilter");
 
     List<Department> departments = AppDAO.getDepartments();
-    List<Batch> batches = (deptId != null && !deptId.isEmpty()) ? AppDAO.getBatches(deptId) : AppDAO.getBatches(null);
-    List<Section> sections = (batchId != null && !batchId.isEmpty()) ? AppDAO.getSections(batchId) : AppDAO.getSections(null);
-    List<Activity> activities = (deptId != null && !deptId.isEmpty() && batchId != null && !batchId.isEmpty() && secId != null && !secId.isEmpty())
-        ? AppDAO.getActivities(deptId, batchId, secId) : new java.util.ArrayList<>();
+    List<Batch> allBatches = AppDAO.getBatches(null);
+    List<Section> allSections = AppDAO.getSections(null);
+    List<Batch> batches = (deptId != null && !deptId.isEmpty()) ? AppDAO.getBatches(deptId) : allBatches;
+    List<Section> sections = (batchId != null && !batchId.isEmpty()) ? AppDAO.getSections(batchId) : allSections;
 
-    // Find names for display
+    boolean hasSelection = "true".equals(applyFilter) && ((deptId != null && !deptId.isEmpty()) || (batchId != null && !batchId.isEmpty()) || (secId != null && !secId.isEmpty()));
+    List<Activity> activities = hasSelection ? AppDAO.getActivities(deptId, batchId, secId) : new java.util.ArrayList<>();
+
     String deptName = "", batchName = "", secName = "";
     for (Department d : departments) { if (d.id.equals(deptId)) deptName = d.name; }
-    for (Batch b : batches) { if (b.id.equals(batchId)) batchName = b.name; }
-    for (Section s : sections) { if (s.id.equals(secId)) secName = s.name; }
+    for (Batch b : allBatches) { if (b.id.equals(batchId)) batchName = b.name; }
+    for (Section s : allSections) { if (s.id.equals(secId)) secName = s.name; }
 
-    boolean hasSelection = !deptName.isEmpty() && !batchName.isEmpty() && !secName.isEmpty();
-
-    // Split activities
     java.util.List<Activity> todays = new java.util.ArrayList<>();
     java.util.List<Activity> upcoming = new java.util.ArrayList<>();
     java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
@@ -102,7 +102,6 @@
         .prompt-box h2 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; }
         .prompt-box p { font-size: 0.875rem; color: var(--muted-fg); margin-top: 0.5rem; }
 
-        /* Modal Overlay & Card */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; padding: 1rem; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-card { background: white; border-radius: 1.5rem; border: 1.5px solid var(--border); width: 100%; max-width: 32rem; padding: 1.75rem; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.25); transform: translateY(12px); transition: transform 0.2s ease; position: relative; max-height: 90vh; overflow-y: auto; }
@@ -122,21 +121,26 @@
     </style>
 </head>
 <body>
-    <!-- Top bar -->
     <nav class="topbar">
-        <a href="index.jsp" class="topbar-logo">UNIFY</a>
+        <div style="display:flex;align-items:center;gap:1.75rem">
+            <a href="index.jsp" class="topbar-logo">UNIFY</a>
+            <a href="activities.jsp" style="font-size:0.875rem;font-weight:600;color:var(--primary);text-decoration:none">All Activities</a>
+        </div>
         <div class="topbar-actions">
-            <a href="login.jsp" class="btn-login">Sign in →</a>
+            <% if (currentUser != null) { %>
+                <a href="dashboard.jsp" class="btn-login">Dashboard (<%= currentUser.name %>) →</a>
+            <% } else { %>
+                <a href="login.jsp" class="btn-login">Sign in →</a>
+            <% } %>
         </div>
     </nav>
 
-    <!-- Hero band -->
     <section class="hero">
         <div class="hero-inner">
             <p class="hero-label">Your class</p>
             <h1>
                 <% if (hasSelection) { %>
-                    <span><%= deptName %> ·</span> <span class="class-name"><%= batchName %></span> · <%= secName %>
+                    <span><%= !deptName.isEmpty() ? deptName + " ·" : "" %></span> <span class="class-name"><%= !batchName.isEmpty() ? batchName : "" %></span> <%= !secName.isEmpty() ? "· " + secName : "" %>
                 <% } else { %>
                     Welcome to <span class="class-name">UNIFY</span>
                 <% } %>
@@ -145,12 +149,12 @@
         </div>
     </section>
 
-    <!-- Class picker -->
     <div class="picker-card">
         <form method="GET" action="index.jsp" class="picker-inner">
+            <input type="hidden" name="applyFilter" value="true">
             <div class="picker-field">
                 <label>Department</label>
-                <select name="departmentId" onchange="this.form.submit()">
+                <select id="deptSelect" name="departmentId">
                     <option value="">Select Department</option>
                     <% for (Department d : departments) { %>
                         <option value="<%= d.id %>" <%= d.id.equals(deptId != null ? deptId : "") ? "selected" : "" %>><%= d.name %></option>
@@ -159,7 +163,7 @@
             </div>
             <div class="picker-field">
                 <label>Batch</label>
-                <select name="batchId" onchange="this.form.submit()">
+                <select id="batchSelect" name="batchId">
                     <option value="">Select Batch</option>
                     <% for (Batch b : batches) { %>
                         <option value="<%= b.id %>" <%= b.id.equals(batchId != null ? batchId : "") ? "selected" : "" %>><%= b.name %></option>
@@ -168,21 +172,21 @@
             </div>
             <div class="picker-field">
                 <label>Section</label>
-                <select name="sectionId">
+                <select id="secSelect" name="sectionId">
                     <option value="">Select Section</option>
                     <% for (Section s : sections) { %>
                         <option value="<%= s.id %>" <%= s.id.equals(secId != null ? secId : "") ? "selected" : "" %>><%= s.name %></option>
                     <% } %>
                 </select>
             </div>
-            <div class="picker-submit" style="display:flex;gap:0.5rem">
-                <button type="submit" class="btn-go">View Activities</button>
+            <div class="picker-submit" style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                <button type="submit" class="btn-go">Load in Home Screen</button>
+                <button type="submit" formaction="activities.jsp" class="btn-reset" style="background:#fff0f0;color:var(--primary);border-color:#fcc;font-weight:600">Open Full Page →</button>
                 <% if (hasSelection) { %><a href="index.jsp" class="btn-reset">Reset</a><% } %>
             </div>
         </form>
     </div>
 
-    <!-- Content grid -->
     <div class="content">
         <% if (!hasSelection) { %>
             <div class="prompt-section">
@@ -190,20 +194,16 @@
                     <div class="prompt-icon">🎓</div>
                     <h2>Select your class to view activities</h2>
                     <p>Choose a Department, Batch, and Section above to see your schedule.</p>
+                    <div style="margin-top:1.25rem">
+                        <a href="activities.jsp" class="btn-go" style="display:inline-block;text-decoration:none;padding:0.6rem 1.5rem">Browse All Activities</a>
+                    </div>
                 </div>
             </div>
         <% } else { %>
 
-        <!-- Left: Activities -->
         <div>
-            <!-- Today's activities -->
-            <div class="section-title">📅 Today's Activities</div>
-            <% if (todays.isEmpty()) { %>
-                <div class="empty-box" style="margin-bottom:2rem">
-                    <div class="empty-icon">🎉</div>
-                    No activities scheduled today — enjoy your day!
-                </div>
-            <% } else { %>
+            <% if (!todays.isEmpty()) { %>
+                <div class="section-title">📅 Today's Activities</div>
                 <div class="activity-list" style="margin-bottom:2rem">
                     <% for (Activity a : todays) { %>
                         <div class="activity-card" onclick="openActivityModal('<%= a.activityType.replace("-"," ") %>', '<%= a.title.replace("'","\\'") %>', '<%= a.subject.replace("'","\\'") %>', '<%= a.eventDate != null ? a.eventDate : "Today" %>', '<%= a.room != null ? a.room.replace("'","\\'") : "N/A" %>', '<%= a.description != null ? a.description.replace("'","\\'").replace("\n","\\n") : "No description provided." %>', '<%= deptName %>', '<%= batchName %>', '<%= secName %>')">
@@ -222,12 +222,9 @@
                 </div>
             <% } %>
 
-            <!-- Upcoming -->
-            <div class="section-title">🗓️ Upcoming</div>
-            <% if (upcoming.isEmpty()) { %>
-                <p style="font-size:0.875rem;color:var(--muted-fg)">Nothing else on the horizon.</p>
-            <% } else { %>
-                <div class="activity-list">
+            <% if (!upcoming.isEmpty()) { %>
+                <div class="section-title">🗓️ Upcoming</div>
+                <div class="activity-list" style="margin-bottom:2rem">
                     <% for (Activity a : upcoming) { %>
                         <div class="activity-card" onclick="openActivityModal('<%= a.activityType.replace("-"," ") %>', '<%= a.title.replace("'","\\'") %>', '<%= a.subject.replace("'","\\'") %>', '<%= a.eventDate != null ? a.eventDate : "TBD" %>', '<%= a.room != null ? a.room.replace("'","\\'") : "N/A" %>', '<%= a.description != null ? a.description.replace("'","\\'").replace("\n","\\n") : "No description provided." %>', '<%= deptName %>', '<%= batchName %>', '<%= secName %>')">
                             <div class="activity-color" style="background:var(--accent)"></div>
@@ -243,14 +240,42 @@
                     <% } %>
                 </div>
             <% } %>
+
+            <div class="section-title">📋 All Activities for This Class (<%= activities.size() %>)</div>
+            <% if (activities.isEmpty()) { %>
+                <div class="empty-box" style="margin-bottom:2rem">
+                    <div class="empty-icon">📭</div>
+                    No activities recorded yet for this class section.
+                </div>
+            <% } else { %>
+                <div class="activity-list">
+                    <% for (Activity a : activities) { %>
+                        <div class="activity-card" onclick="openActivityModal('<%= a.activityType.replace("-"," ") %>', '<%= a.title.replace("'","\\'") %>', '<%= a.subject.replace("'","\\'") %>', '<%= a.eventDate != null ? a.eventDate : "Date TBD" %>', '<%= a.room != null ? a.room.replace("'","\\'") : "N/A" %>', '<%= a.description != null ? a.description.replace("'","\\'").replace("\n","\\n") : "No description provided." %>', '<%= deptName %>', '<%= batchName %>', '<%= secName %>')">
+                            <div class="activity-color" style="background:<%= (a.eventDate != null && a.eventDate.equals(today)) ? "var(--primary)" : "var(--accent)" %>"></div>
+                            <div class="activity-body">
+                                <span class="activity-badge"><%= a.activityType.replace("-"," ") %></span>
+                                <div class="activity-title"><%= a.title %></div>
+                                <div class="activity-meta"><%= a.subject %><%= (a.room != null && !a.room.isEmpty()) ? " · " + a.room : "" %></div>
+                                <% if (a.description != null && !a.description.isEmpty()) { %>
+                                    <div class="activity-meta" style="margin-top:0.25rem"><%= a.description %></div>
+                                <% } %>
+                            </div>
+                            <div class="activity-date"><%= a.eventDate != null && !a.eventDate.isEmpty() ? a.eventDate : "Date TBD" %></div>
+                        </div>
+                    <% } %>
+                </div>
+            <% } %>
         </div>
 
-        <!-- Right: Next activity card -->
         <aside>
-            <% Activity next = upcoming.isEmpty() ? (todays.isEmpty() ? null : todays.get(0)) : upcoming.get(0); %>
+            <% Activity next = null;
+               if (!upcoming.isEmpty()) next = upcoming.get(0);
+               else if (!todays.isEmpty()) next = todays.get(0);
+               else if (!activities.isEmpty()) next = activities.get(0);
+            %>
             <% if (next != null) { %>
                 <div class="countdown-card" onclick="openActivityModal('<%= next.activityType.replace("-"," ") %>', '<%= next.title.replace("'","\\'") %>', '<%= next.subject.replace("'","\\'") %>', '<%= next.eventDate != null ? next.eventDate : "Date TBD" %>', '<%= next.room != null ? next.room.replace("'","\\'") : "N/A" %>', '<%= next.description != null ? next.description.replace("'","\\'").replace("\n","\\n") : "No description provided." %>', '<%= deptName %>', '<%= batchName %>', '<%= secName %>')">
-                    <p class="countdown-label">Next Activity</p>
+                    <p class="countdown-label"><%= !upcoming.isEmpty() ? "Next Activity" : (!todays.isEmpty() ? "Today's Activity" : "Latest Activity") %></p>
                     <div class="countdown-subject"><%= next.subject %></div>
                     <div class="countdown-title"><%= next.title %></div>
                     <div class="countdown-date">
@@ -261,7 +286,7 @@
             <% } else { %>
                 <div class="no-class-card">
                     <div class="no-class-title">All clear!</div>
-                    <div class="no-class-sub">No upcoming activities for this class section.</div>
+                    <div class="no-class-sub">No activities recorded for this class section.</div>
                 </div>
             <% } %>
         </aside>
@@ -269,7 +294,6 @@
         <% } %>
     </div>
 
-    <!-- Activity Detail Modal -->
     <div id="activityModal" class="modal-overlay" onclick="if(event.target===this)closeActivityModal()">
         <div class="modal-card">
             <button class="modal-close" onclick="closeActivityModal()">✕</button>
@@ -302,6 +326,58 @@
     </div>
 
     <script>
+        const allBatches = [
+            <% for (Batch b : allBatches) { %>
+            { id: '<%= b.id %>', deptId: '<%= b.departmentId != null ? b.departmentId : "" %>', name: '<%= b.name.replace("'", "\\'") %>' },
+            <% } %>
+        ];
+        const allSections = [
+            <% for (Section s : allSections) { %>
+            { id: '<%= s.id %>', batchId: '<%= s.batchId != null ? s.batchId : "" %>', name: '<%= s.name.replace("'", "\\'") %>' },
+            <% } %>
+        ];
+
+        const deptSelect = document.getElementById('deptSelect');
+        const batchSelect = document.getElementById('batchSelect');
+        const secSelect = document.getElementById('secSelect');
+
+        function updateBatches(selectedDeptId, preserveBatchId) {
+            batchSelect.innerHTML = '<option value="">Select Batch</option>';
+            secSelect.innerHTML = '<option value="">Select Section</option>';
+            const filtered = selectedDeptId ? allBatches.filter(b => b.deptId === selectedDeptId) : allBatches;
+            filtered.forEach(b => {
+                const opt = document.createElement('option');
+                opt.value = b.id;
+                opt.textContent = b.name;
+                if (preserveBatchId && b.id === preserveBatchId) opt.selected = true;
+                batchSelect.appendChild(opt);
+            });
+            updateSections(batchSelect.value, '<%= secId != null ? secId : "" %>');
+        }
+
+        function updateSections(selectedBatchId, preserveSecId) {
+            secSelect.innerHTML = '<option value="">Select Section</option>';
+            const filtered = selectedBatchId ? allSections.filter(s => s.batchId === selectedBatchId) : allSections;
+            filtered.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.name;
+                if (preserveSecId && s.id === preserveSecId) opt.selected = true;
+                secSelect.appendChild(opt);
+            });
+        }
+
+        if (deptSelect) {
+            deptSelect.addEventListener('change', function() {
+                updateBatches(this.value);
+            });
+        }
+        if (batchSelect) {
+            batchSelect.addEventListener('change', function() {
+                updateSections(this.value);
+            });
+        }
+
         function openActivityModal(type, title, subject, date, room, desc, dept, batch, sec) {
             document.getElementById('mType').innerText = type.toUpperCase();
             document.getElementById('mTitle').innerText = title;

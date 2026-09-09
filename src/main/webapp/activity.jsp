@@ -13,21 +13,18 @@
 
     List<Department> departments = AppDAO.getDepartments();
 
-    // Determine active department filter
     String selectedDept = request.getParameter("departmentId");
     if (isCR || isTeacher) {
         selectedDept = currentUser.departmentId;
     }
     if (selectedDept == null) selectedDept = "";
 
-    // Determine active batch filter
     String selectedBatch = request.getParameter("batchId");
     if (isCR) {
         selectedBatch = currentUser.batchId;
     }
     if (selectedBatch == null) selectedBatch = "";
 
-    // Determine active section filter
     String selectedSec = request.getParameter("sectionId");
     if (isCR) {
         selectedSec = currentUser.sectionId;
@@ -90,6 +87,7 @@
         </div>
         <nav>
             <a href="index.jsp" class="nav-link">Public Home</a>
+            <a href="activities.jsp" class="nav-link">All Activities</a>
             <a href="dashboard.jsp" class="nav-link">Dashboard</a>
             <% if (isAdmin) { %>
                 <a href="users.jsp" class="nav-link">Manage Users</a>
@@ -114,7 +112,6 @@
                 <% } %>
             </p>
 
-            <%-- GET form helper for updating dropdown filters --%>
             <% if (!isCR) { %>
                 <form id="filterForm" method="GET" action="activity.jsp" style="display:none"></form>
             <% } %>
@@ -123,7 +120,6 @@
                 <input type="hidden" name="action" value="create">
 
                 <div class="grid-3">
-                    <%-- Department Selector --%>
                     <div class="form-group">
                         <label class="form-label">Department</label>
                         <% if (isCR || isTeacher) { %>
@@ -143,7 +139,6 @@
                         <% } %>
                     </div>
 
-                    <%-- Batch Selector --%>
                     <div class="form-group">
                         <label class="form-label">Batch</label>
                         <% if (isCR) { %>
@@ -163,7 +158,6 @@
                         <% } %>
                     </div>
 
-                    <%-- Section Selector --%>
                     <div class="form-group">
                         <label class="form-label">Section</label>
                         <% if (isCR) { %>

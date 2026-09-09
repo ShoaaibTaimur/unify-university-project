@@ -23,7 +23,6 @@ public class UserDAO {
             e.printStackTrace();
         }
 
-        // Forced credentials fallback
         if ("admin@unify.edu".equalsIgnoreCase(email) && "admin123".equals(password)) {
             return new User("u-admin", "System Admin", "admin@unify.edu", "admin123", "admin", null, null, null);
         }
@@ -31,6 +30,34 @@ public class UserDAO {
             return new User("u-teacher", "Dr. Alan Turing", "teacher@unify.edu", "teacher123", "teacher", "dept-1", null, null);
         }
         if ("cr@unify.edu".equalsIgnoreCase(email) && "cr123".equals(password)) {
+            return new User("u-cr", "John Doe (CR)", "cr@unify.edu", "cr123", "cr", "dept-1", "batch-1", "sec-1");
+        }
+
+        return null;
+    }
+
+    public static User getUserById(String id) {
+        if (id == null || id.isEmpty()) return null;
+        String sql = "SELECT * FROM USERS WHERE ID = ?";
+        try (Connection conn = DB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapUser(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if ("u-admin".equals(id)) {
+            return new User("u-admin", "System Admin", "admin@unify.edu", "admin123", "admin", null, null, null);
+        }
+        if ("u-teacher".equals(id)) {
+            return new User("u-teacher", "Dr. Alan Turing", "teacher@unify.edu", "teacher123", "teacher", "dept-1", null, null);
+        }
+        if ("u-cr".equals(id)) {
             return new User("u-cr", "John Doe (CR)", "cr@unify.edu", "cr123", "cr", "dept-1", "batch-1", "sec-1");
         }
 

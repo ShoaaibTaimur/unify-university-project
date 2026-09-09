@@ -9,7 +9,6 @@ echo "=========================================="
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# Docker detection & auto-start on macOS
 if command -v docker &>/dev/null; then
     DOCKER_BIN="docker"
 elif command -v sudo &>/dev/null && sudo docker ps &>/dev/null; then
@@ -39,7 +38,6 @@ if ! $DOCKER_BIN info &>/dev/null; then
     exit 1
 fi
 
-# Ensure unified Docker bridge network
 $DOCKER_BIN network create unify-net 2>/dev/null || true
 
 echo "[1/6] Starting Oracle DB Container via Docker..."
@@ -110,7 +108,6 @@ if [ ! -f "$LIB_DIR/jstl-1.2.jar" ]; then
     curl -sSL "https://repo1.maven.org/maven2/javax/servlet/jstl/1.2/jstl-1.2.jar" -o "$LIB_DIR/jstl-1.2.jar"
 fi
 
-# Compilation & Packaging
 if command -v ant &> /dev/null; then
     ant war
 else

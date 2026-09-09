@@ -52,7 +52,6 @@
     </style>
 </head>
 <body>
-    <!-- Left hero panel -->
     <div class="hero">
         <div class="hero-logo">UNIFY</div>
         <div>
@@ -62,7 +61,6 @@
         <footer>© 2026 UNIFY</footer>
     </div>
 
-    <!-- Right form panel -->
     <div class="form-side">
         <div class="form-box">
             <a href="index.jsp" class="btn-back">← Back to home</a>

@@ -9,7 +9,6 @@
     List<Department> departments = AppDAO.getDepartments();
     List<Batch> batches = AppDAO.getBatches(null);
     List<Section> sections = AppDAO.getSections(null);
-    // For the Add Section form: filter batches by selected dept
     String secFilterDept = request.getParameter("secDept");
     List<Batch> secBatches = (secFilterDept != null && !secFilterDept.isEmpty())
         ? AppDAO.getBatches(secFilterDept) : AppDAO.getBatches(null);
@@ -93,9 +92,7 @@
         <h1>Organization</h1>
         <p class="subtitle">Departments, batches, and sections — manage everything in one place.</p>
 
-        <!-- Add forms row -->
         <div class="form-grid">
-            <!-- Add Department -->
             <form action="${pageContext.request.contextPath}/hierarchy" method="POST" class="form-card">
                 <input type="hidden" name="type" value="department">
                 <input type="hidden" name="action" value="create">
@@ -109,7 +106,6 @@
                 <button type="submit" class="btn-add">Add Department</button>
             </form>
 
-            <!-- Add Batch -->
             <form action="${pageContext.request.contextPath}/hierarchy" method="POST" class="form-card">
                 <input type="hidden" name="type" value="batch">
                 <input type="hidden" name="action" value="create">
@@ -132,9 +128,7 @@
                 <button type="submit" class="btn-add">Add Batch</button>
             </form>
 
-            <!-- Add Section -->
             <div class="form-card">
-                <%-- Step 1: filter batches by dept via GET --%>
                 <form action="hierarchy.jsp" method="GET" style="margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)">
                     <div class="form-card-header">
                         <div class="form-card-title">Add Section</div>
@@ -149,7 +143,6 @@
                         </select>
                     </div>
                 </form>
-                <%-- Step 2: create section in the filtered batch --%>
                 <form action="${pageContext.request.contextPath}/hierarchy" method="POST">
                     <input type="hidden" name="type" value="section">
                     <input type="hidden" name="action" value="create">
@@ -175,7 +168,6 @@
             </div>
         </div>
 
-        <!-- Structure tree -->
         <div class="structure">
             <h2>Structure</h2>
             <p class="subtitle" style="margin-bottom:1.25rem">Every department, its batches, and their sections.</p>

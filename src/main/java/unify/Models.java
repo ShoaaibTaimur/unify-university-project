@@ -9,7 +9,7 @@ public class Models {
         public String name;
         public String email;
         public String password;
-        public String role; // admin, teacher, cr
+        public String role;
         public String departmentId;
         public String batchId;
         public String sectionId;

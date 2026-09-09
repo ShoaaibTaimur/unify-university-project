@@ -72,7 +72,6 @@
         .empty-state { background: white; border: 1.5px dashed var(--border); border-radius: 1.25rem; padding: 4rem 2rem; text-align: center; color: var(--muted-fg); font-size: 0.9rem; }
         .empty-icon { font-size: 2rem; margin-bottom: 1rem; opacity: 0.4; }
 
-        /* Modal Overlay & Card */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; padding: 1rem; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-card { background: white; border-radius: 1.5rem; border: 1.5px solid var(--border); width: 100%; max-width: 32rem; padding: 1.75rem; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.25); transform: translateY(12px); transition: transform 0.2s ease; position: relative; max-height: 90vh; overflow-y: auto; }
@@ -98,6 +97,7 @@
         </div>
         <nav>
             <a href="index.jsp" class="nav-link">Public Home</a>
+            <a href="activities.jsp" class="nav-link">All Activities</a>
             <a href="dashboard.jsp" class="nav-link active">Dashboard</a>
             <% if ("admin".equalsIgnoreCase(currentUser.role)) { %>
                 <a href="users.jsp" class="nav-link">Manage Users</a>
@@ -191,7 +191,6 @@
         <% } %>
     </main>
 
-    <!-- Detail Popup Modal -->
     <div id="activityModal" class="modal-overlay" onclick="if(event.target===this)closeActivityModal()">
         <div class="modal-card">
             <button class="modal-close" onclick="closeActivityModal()">✕</button>

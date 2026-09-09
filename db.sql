@@ -1,7 +1,5 @@
--- Unify Oracle DB Initialization Script (SQL*Plus compatible)
 SET DEFINE OFF;
 
--- Create Tables if not exist
 BEGIN
    EXECUTE IMMEDIATE '
    CREATE TABLE USERS (
@@ -95,9 +93,6 @@ EXCEPTION WHEN OTHERS THEN
    IF SQLCODE != -955 THEN RAISE; END IF;
 END;
 /
-
--- Triggers
--- 1. Validate User Data & Normalize Email
 CREATE OR REPLACE TRIGGER TRG_VALIDATE_USER_DATA
 BEFORE INSERT OR UPDATE ON USERS
 FOR EACH ROW
@@ -111,8 +106,6 @@ BEGIN
     END IF;
 END;
 /
-
--- 2. Validate CR Activity Scope
 CREATE OR REPLACE TRIGGER TRG_CHECK_CR_ACTIVITY_SCOPE
 BEFORE INSERT OR UPDATE ON ACTIVITIES
 FOR EACH ROW
@@ -137,8 +130,6 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20003, 'Creator user not found.');
 END;
 /
-
--- 3. Audit Activity Changes
 CREATE OR REPLACE TRIGGER TRG_AUDIT_ACTIVITIES
 AFTER INSERT OR UPDATE OR DELETE ON ACTIVITIES
 FOR EACH ROW
@@ -155,8 +146,6 @@ BEGIN
     END IF;
 END;
 /
-
--- Seed Data (Insert if missing)
 DECLARE
    v_user_count NUMBER := 0;
 BEGIN
