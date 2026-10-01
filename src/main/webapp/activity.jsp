@@ -1,10 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="unify.Models.*, unify.AppDAO, java.util.List" %>
+<%@ page import="unify.Models.*, unify.AppDAO, unify.UserDAO, java.util.List" %>
 <%
     User currentUser = (User) session.getAttribute("user");
     if (currentUser == null) {
         response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
+    }
+
+    if (currentUser != null) {
+        User fresh = UserDAO.getUserById(currentUser.id);
+        if (fresh != null) {
+            currentUser = fresh;
+            session.setAttribute("user", currentUser);
+        }
     }
 
     boolean isCR = "cr".equalsIgnoreCase(currentUser.role);
@@ -19,6 +27,17 @@
     }
     if (selectedDept == null) selectedDept = "";
 
+    boolean deptValid = false;
+    for (Department d : departments) {
+        if (d.id.equals(selectedDept)) {
+            deptValid = true;
+            break;
+        }
+    }
+    if (!deptValid && !departments.isEmpty() && isTeacher) {
+        selectedDept = departments.get(0).id;
+    }
+
     String selectedBatch = request.getParameter("batchId");
     if (isCR) {
         selectedBatch = currentUser.batchId;
@@ -32,6 +51,14 @@
     if (selectedSec == null) selectedSec = "";
 
     List<Batch> batches = (!selectedDept.isEmpty()) ? AppDAO.getBatches(selectedDept) : AppDAO.getBatches(null);
+    if (selectedDept.isEmpty() && !selectedBatch.isEmpty()) {
+        for (Batch b : batches) {
+            if (b.id.equals(selectedBatch)) {
+                selectedDept = b.departmentId;
+                break;
+            }
+        }
+    }
     List<Section> sections = (!selectedBatch.isEmpty()) ? AppDAO.getSections(selectedBatch) : AppDAO.getSections(null);
 %>
 <!DOCTYPE html>
@@ -106,7 +133,7 @@
                 <% if (isCR) { %>
                     Restricted to your assigned class section.
                 <% } else if (isTeacher) { %>
-                    Restricted to your assigned department.
+                    Teacher — access to all batches and departments.
                 <% } else { %>
                     System Admin — full university access.
                 <% } %>

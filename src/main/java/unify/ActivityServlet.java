@@ -16,6 +16,12 @@ public class ActivityServlet extends HttpServlet {
             return;
         }
 
+        User fresh = UserDAO.getUserById(current.id);
+        if (fresh != null) {
+            current = fresh;
+            session.setAttribute("user", current);
+        }
+
         String action = req.getParameter("action");
         if ("create".equalsIgnoreCase(action)) {
             Activity a = new Activity();

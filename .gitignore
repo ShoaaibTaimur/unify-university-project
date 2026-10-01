@@ -1,6 +1,3 @@
-# ==========================================
-# macOS System Files (Apple Silicon / Intel)
-# ==========================================
 .DS_Store
 .DS_Store?
 ._*
@@ -12,18 +9,12 @@ Icon?
 Network Trash Folder
 Temporary Items
 
-# ==========================================
-# Linux & Windows System Files
-# ==========================================
 Thumbs.db
 ehthumbs.db
 ehthumbs_vista.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
 
-# ==========================================
-# Temporary, Scratch & Local Runtime Files
-# ==========================================
 *.tmp
 *.temp
 *.swp
@@ -33,9 +24,6 @@ cookies.txt
 *cookies*.txt
 scratch/
 
-# ==========================================
-# Logs & Process Dumps
-# ==========================================
 *.log
 logs/
 npm-debug.log*
@@ -43,19 +31,12 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# ==========================================
-# Node / Frontend Artifacts
-# ==========================================
 node_modules/
 .npm/
 .package-lock.json
 
-# Generated CSS (built via Tailwind)
 src/main/webapp/css/style.css
 
-# ==========================================
-# Java / Build Artifacts & Compiled Classes
-# ==========================================
 dist/
 build/
 bin/
@@ -69,21 +50,14 @@ WEB-INF/classes/
 *.zip
 *.tar.gz
 
-# Downloaded JAR dependencies (managed by setup scripts)
 src/main/webapp/WEB-INF/lib/*.jar
 !src/main/webapp/WEB-INF/lib/.gitkeep
 
-# ==========================================
-# Databases & Local Volume Mounts
-# ==========================================
 *.db
 *.sqlite
 *.sqlite3
 oracle-data/
 
-# ==========================================
-# Secrets, Keys & Environment Variables
-# ==========================================
 .env
 .env.local
 .env.*.local
@@ -95,9 +69,6 @@ oracle-data/
 secrets/
 config/local.json
 
-# ==========================================
-# IDEs & Editor Metadata
-# ==========================================
 .idea/
 .vscode/
 .trae/

@@ -27,7 +27,7 @@ public class UserDAO {
             return new User("u-admin", "System Admin", "admin@unify.edu", "admin123", "admin", null, null, null);
         }
         if ("teacher@unify.edu".equalsIgnoreCase(email) && "teacher123".equals(password)) {
-            return new User("u-teacher", "Dr. Alan Turing", "teacher@unify.edu", "teacher123", "teacher", "dept-1", null, null);
+            return new User("u-teacher", "Dr. Alan Turing", "teacher@unify.edu", "teacher123", "teacher", "dept-cbd5d384", null, null);
         }
         if ("cr@unify.edu".equalsIgnoreCase(email) && "cr123".equals(password)) {
             return new User("u-cr", "John Doe (CR)", "cr@unify.edu", "cr123", "cr", "dept-1", "batch-1", "sec-1");
@@ -55,7 +55,7 @@ public class UserDAO {
             return new User("u-admin", "System Admin", "admin@unify.edu", "admin123", "admin", null, null, null);
         }
         if ("u-teacher".equals(id)) {
-            return new User("u-teacher", "Dr. Alan Turing", "teacher@unify.edu", "teacher123", "teacher", "dept-1", null, null);
+            return new User("u-teacher", "Dr. Alan Turing", "teacher@unify.edu", "teacher123", "teacher", "dept-cbd5d384", null, null);
         }
         if ("u-cr".equals(id)) {
             return new User("u-cr", "John Doe (CR)", "cr@unify.edu", "cr123", "cr", "dept-1", "batch-1", "sec-1");
